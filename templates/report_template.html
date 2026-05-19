@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>{{ data.date }} 中国A股深度复盘</title>
+  <style>
+    :root{--bg:#f7fafc;--card:#fff;--muted:#6b7280;--heading:#0f172a;--accent:#2563eb;--border:#e6eef8;font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;}
+    body{margin:0;background:var(--bg);color:var(--heading);line-height:1.6}
+    .container{max-width:980px;margin:28px auto;padding:20px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
+    h1{margin:0;font-size:20px}
+    .meta{color:var(--muted);font-size:13px;margin-top:6px}
+    ul{margin:8px 0 12px 20px}
+    .small{font-size:13px;color:var(--muted)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px 6px;border-bottom:1px solid #f1f5f9;text-align:left}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>{{ data.date }} 中国A股深度复盘</h1>
+      <div class="meta">自动生成报告</div>
+    </div>
+
+    <div class="card">
+      <h2>一、外围与财经消息摘要</h2>
+      <ul>
+        {% for s in data.outer %}
+        <li>{{ s }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>二、当日最热门题材（简要）</h2>
+      <ul>
+        {% for t in data.hot_themes %}
+        <li><strong>{{ t.name }}</strong>{% if t.notes %} — {{ t.notes }}{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>三、题材核心中军 & 情绪龙头（示例）</h2>
+      {% for key, val in data.top_stocks.items() %}
+      <h3 style="margin-top:8px">{{ key }}</h3>
+      <p><strong>中军（Top3）:</strong> {{ val.mid | join(', ') }}</p>
+      <p><strong>情绪龙头（Top3）:</strong> {{ val.sentiment | join(', ') }}</p>
+      {% endfor %}
+    </div>
+
+    <div class="card">
+      <h2>四、结论</h2>
+      <p class="small">{{ data.conclusion }}</p>
+    </div>
+
+    <div class="card small">
+      <strong>提示：</strong>若需实时数据，请在仓库下添加 scrapers/scrape_data.py，导出 get_report_data() 函数返回结构化数据（示例可见 tools/example_scraper.md）。
+    </div>
+  </div>
+</body>
+</html>
